@@ -7,8 +7,7 @@ stages:
 
 execGradle:
   stage: build
-    script:
-      - ./gradlew build
+    script: "./gradlew build"
     only:
       - master
     tags:
