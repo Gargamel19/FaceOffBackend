@@ -3,13 +3,14 @@ package se1app.applicationcore.facade;
 import static org.hamcrest.Matchers.*;
 import static io.restassured.RestAssured.*;
 
+import io.restassured.RestAssured;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.WebIntegrationTest;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.context.embedded.LocalServerPort;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.http.HttpStatus;
@@ -22,11 +23,13 @@ import se1app.applicationcore.moviecomponent.Movie;
 import java.util.Arrays;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
-@WebIntegrationTest
+@SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 public class ApplicationFacadeControllerTest {
 
+    @LocalServerPort
+    int port;
+    
     @Autowired
     private CustomerRepository customerRepository;
 
@@ -42,6 +45,8 @@ public class ApplicationFacadeControllerTest {
         minnie = new Customer("Minnie Mouse");
         pluto = new Customer("Pluto");
         customerRepository.save(Arrays.asList(mickey, minnie, pluto));
+
+        RestAssured.port = port;
     }
 
     @Test

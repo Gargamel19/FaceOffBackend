@@ -1,14 +1,19 @@
-before_script:
+image : openjdk:8
 
-after_script:
+variables:
+  DOCKER_HOST: tcp://localhost:2375
+
+services:
+ - nexus.informatik.haw-hamburg.de/docker:stable-dind
 
 stages:
   - build
 
-execGradle:
+build:
   stage: build
-  script: "./gradlew build"
+  tags:
+    - k8s
   only:
     - master
-  tags:
-    - testing
+  script:
+    - ./gradlew build
