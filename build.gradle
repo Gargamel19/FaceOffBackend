@@ -42,7 +42,7 @@ dependencies {
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile 'org.mockito:mockito-core:2.10.0'
     testCompile 'org.assertj:assertj-core:3.8.0'
-    testCompile 'io.rest-assured:rest-assured:3.0.3'
+    testCompile 'io.rest-assured:rest-assured:3.0.6'
 }
 
 // start sonarqube with docker: docker run -d --name sonarqube -p 9000:9000 -p 9092:9092 sonarqube

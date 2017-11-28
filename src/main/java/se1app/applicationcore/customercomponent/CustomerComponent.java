@@ -6,6 +6,7 @@ import se1app.applicationcore.moviecomponent.MovieComponentInterface;
 import se1app.applicationcore.moviecomponent.MovieNotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class CustomerComponent implements CustomerComponentInterface {
@@ -34,39 +35,51 @@ public class CustomerComponent implements CustomerComponentInterface {
     public void deleteCustomer(int positiveCustomerId)
     {
         if (positiveCustomerId <= 0) {
-            throw new IllegalArgumentException("customerId must be > 0");
+            throw new IllegalArgumentException("CustomerId must be > 0");
         }
         customerRepository.delete(positiveCustomerId);
     }
 
     @Override
-    public Customer getCustomer(int positiveCustomerId)
+    public Optional<Customer> getCustomer(int positiveCustomerId)
     {
         if (positiveCustomerId <= 0) {
-            throw new IllegalArgumentException("customerId must be > 0");
+            throw new IllegalArgumentException("CustomerId must be > 0");
         }
-        return customerRepository.findOne(positiveCustomerId);
+        return Optional.ofNullable(customerRepository.findOne(positiveCustomerId));
     }
 
     @Override
     public void addCustomer(Customer newCustomer)
     {
         if (newCustomer == null) {
-            throw new IllegalArgumentException("customerToAdd must not be null");
+            throw new IllegalArgumentException("Customer must not be null");
         }
         customerRepository.save(newCustomer);
     }
 
     @Override
+    public void updateCustomer(Customer existingCustomer)
+    {
+        if (existingCustomer == null) {
+            throw new IllegalArgumentException("Customer must not be null");
+        }
+        if (existingCustomer.getId() == 0) {
+            throw new IllegalArgumentException("Customer must exist");
+        }
+        customerRepository.save(existingCustomer);
+    }
+
+    @Override
     public void addReservation(int positiveCustomerId, Reservation newReservation) throws CustomerNotFoundException {
         if (positiveCustomerId <= 0) {
-            throw new IllegalArgumentException("customerId must be > 0");
+            throw new IllegalArgumentException("CustomerId must be > 0");
         }
         if (newReservation == null) {
-            throw new IllegalArgumentException("reservation must not be null");
+            throw new IllegalArgumentException("Reservation must not be null");
         }
         if (newReservation.getMovie() == null) {
-            throw new IllegalArgumentException("movie of reservation must not be null");
+            throw new IllegalArgumentException("Movie of reservation must not be null");
         }
 
         Customer customer = customerRepository.findOne(positiveCustomerId);

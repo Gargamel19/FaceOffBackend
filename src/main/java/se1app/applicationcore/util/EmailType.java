@@ -15,6 +15,10 @@ public class EmailType implements Serializable {
 
     private String email;
 
+    private EmailType()
+    {
+    }
+
     public EmailType(String email)
     {
         if (!isValidEmailAddress(email))

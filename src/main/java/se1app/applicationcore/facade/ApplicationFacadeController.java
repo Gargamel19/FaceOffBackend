@@ -12,6 +12,7 @@ import se1app.applicationcore.moviecomponent.MovieComponentInterface;
 import se1app.applicationcore.moviecomponent.MovieNotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 class ApplicationFacadeController {
@@ -29,8 +30,13 @@ class ApplicationFacadeController {
     }
 
     @RequestMapping(value = "/customers/{id}", method = RequestMethod.GET)
-    public Customer getCustomer(@PathVariable("id") Integer id) {
-        return customerComponentInterface.getCustomer(id);
+    public ResponseEntity<?> getCustomer(@PathVariable("id") Integer id) {
+        Optional<Customer> customer = customerComponentInterface.getCustomer(id);
+        if (customer.isPresent()){
+            return new ResponseEntity<Customer>(customer.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @RequestMapping(value = "/customers/{id}", method = RequestMethod.DELETE)
@@ -44,6 +50,15 @@ class ApplicationFacadeController {
     public Customer addCustomer(@RequestBody Customer customer) {
         customerComponentInterface.addCustomer(customer);
         return customer;
+    }
+
+    @RequestMapping(value = "/customers", method = RequestMethod.PUT)
+    public Customer updateCustomer(@RequestBody Customer customer) {
+        Customer modifiedCustomer = customerComponentInterface.getCustomer(customer.getId()).get();
+        modifiedCustomer.setName(customer.getName());
+        modifiedCustomer.setEmail(customer.getEmail());
+        customerComponentInterface.updateCustomer(modifiedCustomer);
+        return modifiedCustomer;
     }
 
     @RequestMapping(value = "/customers/{id}/reservations", method = RequestMethod.POST)

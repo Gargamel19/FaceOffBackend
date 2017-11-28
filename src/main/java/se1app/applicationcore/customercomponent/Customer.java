@@ -9,16 +9,16 @@ import java.util.List;
 @Entity
 public class Customer {
 
-    private String name;
-
-    private EmailType email;
-
     // Technische ID der Entität (Auto-generiert)
     // Wir würden besser zusätzlich noch eine fachliche ID definieren
     @Id
     @GeneratedValue
     private Integer id;
 
+    private String name;
+
+    private EmailType email;
+    
     // Definition einer 1:*-Beziehung
     // Kaskadierende Operationen
     // Name des Fremdschlüssels gesetzt, weil wir ihn in einer Query verwenden müssen
@@ -46,6 +46,10 @@ public class Customer {
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public EmailType getEmail() {

@@ -9,6 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import se1app.applicationcore.customercomponent.Customer;
 import se1app.applicationcore.customercomponent.CustomerRepository;
+import se1app.applicationcore.util.EmailType;
 
 import java.util.Arrays;
 
@@ -17,12 +18,12 @@ public class Application {
 
     @Bean
     CommandLineRunner init(CustomerRepository customerRepository) {
-        return args -> {
-            Customer mickey = new Customer("Mueller");
-            Customer minnie = new Customer("Meier");
-            Customer pluto = new Customer("Schulze");
-            customerRepository.save(Arrays.asList(mickey, minnie, pluto));
-        };
+        return (evt) -> Arrays.asList(
+                "mueller,meier,schulze".split(","))
+                .forEach(
+                        a -> {
+                            customerRepository.save(new Customer(a, new EmailType(a + "@haw-hamburg.de")));
+                        });
     }
 
     public static void main(String[] args) {
@@ -36,10 +37,11 @@ public class Application {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedOrigins("*")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "HEAD")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS")
                         .allowedHeaders("Content-Type", "Accept", "X-Requested-With", "remember-me")
                         .allowCredentials(true);
             }
         };
     }
+
 }

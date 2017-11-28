@@ -57,7 +57,7 @@ public class CustomerComponentTest {
 
     @Test
     public void testAddReservation() {
-        Customer customer = customerComponentInterface.getCustomer(customerHeinzId);
+        Customer customer = customerComponentInterface.getCustomer(customerHeinzId).get();
         assertThat(customer).isNotNull();
 
         // hier testen wir, ob der Aufruf an die abhängige Komponente MovieComponent korrekt funktioniert

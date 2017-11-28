@@ -50,19 +50,29 @@ public class ApplicationFacadeControllerTest {
     }
 
     @Test
-    public void canFetchMickey() {
+    public void testGetSingleSuccess() {
         Integer mickeyId = mickey.getId();
 
         when().
                 get("/customers/{id}", mickeyId).
-        then().
+                then().
                 statusCode(HttpStatus.OK.value()).
                 body("name", is("Mickey Mouse")).
                 body("id", is(mickeyId));
     }
 
     @Test
-    public void canFetchAll() {
+    public void testGetSingleFail() {
+        Integer mickeyId = Integer.MAX_VALUE;
+
+        when().
+                get("/customers/{id}", mickeyId).
+                then().
+                statusCode(HttpStatus.NOT_FOUND.value());
+    }
+
+    @Test
+    public void testGetAllSuccess() {
         when().
                 get("/customers").
         then().
@@ -71,7 +81,7 @@ public class ApplicationFacadeControllerTest {
     }
 
     @Test
-    public void canDeletePluto() {
+    public void testDeleteSuccess() {
         Integer plutoId = pluto.getId();
 
         when().
@@ -81,20 +91,47 @@ public class ApplicationFacadeControllerTest {
     }
 
     @Test
-    public void canSaveDonald() {
+    public void testCreateSuccess() {
         Customer donald = new Customer("Donald Duck");
 
         given().
                 contentType("application/json").
                 body(donald).
-        expect().
+                expect().
                 statusCode(HttpStatus.CREATED.value()).
         when().
                 post("/customers");
     }
 
     @Test
-    public void canAddReservation() {
+    public void testUpdateSuccess() {
+        Customer trick = new Customer("Trick");
+
+        trick = given().
+                contentType("application/json").
+                body(trick).
+                expect().
+                statusCode(HttpStatus.CREATED.value()).
+        when().
+                post("/customers").as(Customer.class);
+
+        trick.setName("Track");
+        given().
+                contentType("application/json").
+                body(trick).
+                expect().
+                statusCode(HttpStatus.OK.value()).
+        when().
+                put("/customers");
+        when().
+                get("/customers/{id}", trick.getId()).
+        then().
+                statusCode(HttpStatus.OK.value()).
+                body("name", is("Track"));
+    }
+
+    @Test
+    public void testAddReservationSuccess() {
         Integer mickeyId = mickey.getId();
 
         when().
@@ -111,7 +148,6 @@ public class ApplicationFacadeControllerTest {
                 statusCode(HttpStatus.CREATED.value()).
         when().
                 post("/customers/{id}/reservations", mickeyId);
-
         when().
                 get("/movies/007").
         then().

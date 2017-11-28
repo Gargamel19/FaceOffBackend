@@ -1,6 +1,7 @@
 package se1app.applicationcore.customercomponent;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by srs on 12.12.15.
@@ -20,12 +21,17 @@ public interface CustomerComponentInterface {
     /**
      * Sucht einen Customer.
      */
-    Customer getCustomer(int positiveCustomerId);
+    Optional<Customer> getCustomer(int positiveCustomerId);
 
     /**
      * Fügt der Komponente einen Customer hinzu.
      */
     void addCustomer(Customer newCustomer);
+
+    /**
+     * Ändert einen vorhandenen Customer.
+     */
+    void updateCustomer(Customer newCustomer);
 
     /**
      * Fügt einem Customer eine neue Reservierung hinzu.
