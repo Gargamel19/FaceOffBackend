@@ -7,4 +7,5 @@ public interface SpielerComponentInterface {
 	public List<Spieler> getAllSpieler();
 //	public Team getTeam(Spieler spieler);
 	public Spieler getSpielerBySpielerNummer(SpielerNummer spielerNummer);
+	public Spieler getSpielerByName(String name);
 }

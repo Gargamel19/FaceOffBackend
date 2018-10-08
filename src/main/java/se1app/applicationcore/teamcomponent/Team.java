@@ -33,11 +33,12 @@ public class Team {
 	@Column(unique=true)
 	private TeamNummer teamNummer;
 	
+	@Column(unique=true)
 	private String name;
 	
 	@Column
 	@ElementCollection(targetClass=SpielerNummer.class)
-	private List<SpielerNummer> member = new ArrayList<SpielerNummer>();
+	private List<String> member = new ArrayList<String>();
 
 	public Team() {};
 	
@@ -47,7 +48,7 @@ public class Team {
 		} else {
 			
 			this.setTeamNumber(new TeamNummer(nummer));
-			this.name = name;
+			this.name = name.toLowerCase();
 			this.addMember(spiler1);
 			this.addMember(spiler2);
 		}
@@ -65,7 +66,7 @@ public class Team {
 			spielerRepository.save(spieler2neu);
 			
 			this.setTeamNumber(new TeamNummer(nummer));
-			this.name = name;
+			this.name = name.toLowerCase();
 			this.addMember(spieler1neu);
 			this.addMember(spieler2neu);
 		}
@@ -98,23 +99,23 @@ public class Team {
 		this.name = name;
 	}
 	
-	public List<SpielerNummer> getMember() {
+	public List<String> getMember() {
 		return member;
 	}
 	
-	public void setMember(List<SpielerNummer> member) {
+	public void setMember(List<String> member) {
 		this.member = member;
 	}
 	
 	public void deleteMember(Spieler spieler) {
-		this.member.add(spieler.getSpielerNumber());
+		this.member.add(spieler.getName());
 	}
 	
 	public void addMember(Spieler spieler) throws ToManyPlayerInTeamException {
 		if (this.member.size()>=2) {
 			throw new ToManyPlayerInTeamException();
 		}else {
-			this.member.add(spieler.getSpielerNumber());
+			this.member.add(spieler.getName());
 		}
 	}
 

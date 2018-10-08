@@ -26,6 +26,11 @@ public class SpielerComponentImpl implements SpielerComponentInterface{
     	return spielerRepository.findBySpielerNummer(bN);
     }
 
+	@Override
+	public Spieler getSpielerByName(String name) {
+		return spielerRepository.findByName(name);
+	}
+
 //	@Override
 //	public void newSpieler(Integer bN) {
 //		// TODO Auto-generated method stub

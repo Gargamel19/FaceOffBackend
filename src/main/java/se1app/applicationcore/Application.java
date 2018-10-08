@@ -31,7 +31,7 @@ public class Application {
 	                        	spielerRepository.save(we);
 	                        	spielerRepository.save(rewe);
 	                        	
-	                        	teamRepository.save(new Team(1, "StudentenPack", 1, "FettarmQP", "twitsch.tv/FettarmQP", 2, "Mauchel1", "twitsch.tv/Mauchel1", spielerRepository));
+	                        	teamRepository.save(new Team(1, "StudentenPack", 1, "FettarmQP", "twitch.tv/FettarmQP", 2, "Mauchel1", "twitch.tv/Mauchel1", spielerRepository));
 	                        	teamRepository.save(new Team(2, "GeiloTeam", we, rewe));
 								
 

@@ -26,6 +26,7 @@ public class Spieler {
 	@Column(unique=true)
 	private SpielerNummer spielerNummer;
 	
+	@Column(unique=true)
     private String name;
 	
     private String twitch;
@@ -33,14 +34,15 @@ public class Spieler {
     @ManyToOne
     private Team teams ;
     
+    private int kills = 0;
     
     public Spieler() {};
 
 	public Spieler(int nummer, String name, String twitch) throws Exception {
 		
 		this.setSpielerNumber(new SpielerNummer(nummer));
-		this.name = name;
-		this.twitch = twitch;
+		this.name = name.toLowerCase();
+		this.twitch = twitch.toLowerCase();
 		
 	}
 	
@@ -116,6 +118,14 @@ public class Spieler {
 	@Override
 	public String toString() {
 		return "[Spieler: " + spielerNummer.toString() + " ]";
+	}
+
+	public int getKills() {
+		return kills;
+	}
+
+	public void setKills(int kills) {
+		this.kills = kills;
 	}
 	
 }

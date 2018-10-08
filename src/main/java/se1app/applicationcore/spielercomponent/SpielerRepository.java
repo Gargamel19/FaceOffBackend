@@ -12,5 +12,5 @@ import se1app.applicationcore.spielercomponent.Spieler;
 public interface SpielerRepository extends JpaRepository<Spieler, Serializable> {
 	
 	Spieler findBySpielerNummer(SpielerNummer spielerNumber);
-
+	Spieler findByName(String name);
 }

@@ -52,11 +52,33 @@ class ApplicationFacadeController {
 		}
 	}
 	
+	@RequestMapping(value = "/spieler/@/{name}", method = RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity<?> getSpieler(@PathVariable("name") String name) {
+		Spieler spieler = spielerComponentInterface.getSpielerByName(name.toLowerCase());
+		if (spieler!=null) {
+			return new ResponseEntity<Spieler>(spieler, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
 	@RequestMapping(value = "/team/{number}", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<?> getTeam(@PathVariable("number") int number) {
 		TeamNummer teamNummer = new TeamNummer(number);
 		Team team = teamComponentInterface.getTeamByTeamNummer(teamNummer);
+		if (team!=null) {
+			return new ResponseEntity<Team>(team, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@RequestMapping(value = "/team/@/{name}", method = RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity<?> getTeam(@PathVariable("name") String name) {
+		Team team = teamComponentInterface.getTeamByName(name.toLowerCase());
 		if (team!=null) {
 			return new ResponseEntity<Team>(team, HttpStatus.OK);
 		} else {

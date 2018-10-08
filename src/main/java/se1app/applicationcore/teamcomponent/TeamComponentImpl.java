@@ -52,6 +52,11 @@ public class TeamComponentImpl implements TeamComponentInterface{
 	public Team getTeamByTeamNummer(TeamNummer aN){
 		return teamRepository.findByTeamNummer(aN);
 	}
+	
+	@Override
+	public Team getTeamByName(String name){
+		return teamRepository.findByName(name);
+	}
 
 	@Override
 	public List<Team> getAllTeams() {
