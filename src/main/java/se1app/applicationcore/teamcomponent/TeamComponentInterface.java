@@ -11,5 +11,6 @@ public interface TeamComponentInterface {
 	public void newTeam(Team team);
 	public List<Team> getAllTeams();
 	void updateTeam(Team existingTeam);
+	public Team getTeamByTeamNummer(TeamNummer aN);
 }
 

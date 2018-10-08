@@ -48,11 +48,11 @@ public class TeamComponentImpl implements TeamComponentInterface{
 		teamRepository.save(team);
 	}
 	
-//	@Override
-//	public Team getTeam(TeamNumberType aN){
-//		return teamRepository.findByTeamNumber(aN);
-//	}
-//
+	@Override
+	public Team getTeamByTeamNummer(TeamNummer aN){
+		return teamRepository.findByTeamNummer(aN);
+	}
+
 	@Override
 	public List<Team> getAllTeams() {
 		

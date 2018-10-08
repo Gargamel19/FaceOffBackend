@@ -10,7 +10,7 @@ import se1app.applicationcore.spielercomponent.Spieler;
 @Repository
 public interface TeamRepository extends JpaRepository<Team, Serializable> {
 
-	Spieler findByTeamNummer(TeamNummer teamNummer);
+	Team findByTeamNummer(TeamNummer teamNummer);
 	
 }
  

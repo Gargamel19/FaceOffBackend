@@ -10,6 +10,7 @@ import se1app.applicationcore.spielercomponent.SpielerComponentInterface;
 import se1app.applicationcore.spielercomponent.SpielerNummer;
 import se1app.applicationcore.teamcomponent.Team;
 import se1app.applicationcore.teamcomponent.TeamComponentInterface;
+import se1app.applicationcore.teamcomponent.TeamNummer;
 
 import java.util.List;
 
@@ -46,6 +47,18 @@ class ApplicationFacadeController {
 		Spieler spieler = spielerComponentInterface.getSpielerBySpielerNummer(spielerNummer);
 		if (spieler!=null) {
 			return new ResponseEntity<Spieler>(spieler, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@RequestMapping(value = "/team/{number}", method = RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity<?> getTeam(@PathVariable("number") int number) {
+		TeamNummer teamNummer = new TeamNummer(number);
+		Team team = teamComponentInterface.getTeamByTeamNummer(teamNummer);
+		if (team!=null) {
+			return new ResponseEntity<Team>(team, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
