@@ -34,10 +34,13 @@ public class TeamComponentImpl implements TeamComponentInterface{
 		
 		try {
 			teamRepository.save(new Team(teamNumber, name, spieler1, spieler2));
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
 	}
 	
 	@Override
@@ -55,7 +58,7 @@ public class TeamComponentImpl implements TeamComponentInterface{
 	
 	@Override
 	public Team getTeamByName(String name){
-		return teamRepository.findByName(name);
+		return teamRepository.findByName(name.toLowerCase());
 	}
 
 	@Override

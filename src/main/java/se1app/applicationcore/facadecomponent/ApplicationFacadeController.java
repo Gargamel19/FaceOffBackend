@@ -10,6 +10,7 @@ import se1app.applicationcore.spielercomponent.SpielerComponentInterface;
 import se1app.applicationcore.spielercomponent.SpielerNummer;
 import se1app.applicationcore.teamcomponent.Team;
 import se1app.applicationcore.teamcomponent.TeamComponentInterface;
+import se1app.applicationcore.teamcomponent.TeamNotExistException;
 import se1app.applicationcore.teamcomponent.TeamNummer;
 
 import java.util.List;
@@ -23,16 +24,6 @@ class ApplicationFacadeController {
 	@Autowired
 	private TeamComponentInterface teamComponentInterface;
 
-
-//	@RequestMapping(value = "/accounts/{number}", method = RequestMethod.GET)
-//	public ResponseEntity<?> getaccount(@PathVariable("number") TeamNumberType teamNumber) {
-//		Team team = spielerComponentInterface.getTeam(teamNumber);
-//		if (team!=null) {
-//			return new ResponseEntity<Team>(team, HttpStatus.OK);
-//		} else {
-//			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//		}
-//	}
 
 	@RequestMapping(value = "/teams", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
@@ -92,33 +83,55 @@ class ApplicationFacadeController {
 		return spielerComponentInterface.getAllSpieler();
 	}
 
-	@RequestMapping(value = "/teams/register", method = RequestMethod.POST)
+	@RequestMapping(value = "/register/team", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<?> newTeam(@RequestBody int id, String name, Spieler spieler1, Spieler spieler2) throws Exception {
+	public @ResponseBody ResponseEntity<Team> newTeam(@RequestBody TeamSkelett team) {
 		
-		teamComponentInterface.newTeam(3, name, spieler1, spieler2);
+		System.out.println(team.getSpieler1());
+		System.out.println(team.getSpieler2());
+		System.out.println(team.getName());
 		
+		Spieler spieler1 = spielerComponentInterface.getSpielerByName(team.getSpieler1());
+		Spieler spieler2 = spielerComponentInterface.getSpielerByName(team.getSpieler2());
+		Team teamName = teamComponentInterface.getTeamByName(team.getName());
+		if(spieler1!=null&&spieler2!=null&&teamName==null) {
+			
+			int i = 0;
+			while(teamComponentInterface.getTeamByTeamNummer(new TeamNummer(i))!=null) {
+				i++;
+			}
+			
+			try {
+				teamComponentInterface.newTeam(i, team.getName(), spieler1, spieler2);
+				spielerComponentInterface.updateTeamBySpieler(spieler1.getName(), team.getName());
+				spielerComponentInterface.updateTeamBySpieler(spieler2.getName(), team.getName());
+			} catch (TeamNotExistException e) {
+				e.printStackTrace();
+				return new ResponseEntity<>(HttpStatus.CONFLICT);
+			}
 			return new ResponseEntity<Team>(HttpStatus.CREATED);
-		
+		} else {
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		}
 	}
 	
-//	@RequestMapping(value = "/register/branch", method = RequestMethod.POST)
-//	@ResponseStatus(HttpStatus.CREATED)
-//	public @ResponseBody ResponseEntity<Spieler> newBranch(@RequestBody SpielerNumberType bN) {
-//		
-//		spielerComponentInterface.newBranch(bN);
-//		
-//			return new ResponseEntity<Spieler>(HttpStatus.CREATED);
-//		
-//	}
-	
-	
-	
-
-//	@RequestMapping("/accounts")
-//	public List<Account> getAllaccounts() {
-//		return spielerComponentInterface.getAllAccounts();
-//	}
-
+	@RequestMapping(value = "/register/spieler", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.CREATED)
+	public @ResponseBody ResponseEntity<Spieler> newSpieler(@RequestBody SpielerSkelett spieler) {
+		
+		Spieler spielerName = spielerComponentInterface.getSpielerByName(spieler.getName().toLowerCase());
+		if(spielerName==null) {
+			
+			int i = 0;
+			while(spielerComponentInterface.getSpielerBySpielerNummer(new SpielerNummer(i))!=null) {
+				i++;
+			}
+			
+			spielerComponentInterface.newSpieler(i, spieler.getName(), spieler.getTwitch());
+			return new ResponseEntity<Spieler>(HttpStatus.CREATED);
+		} else {
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		}
+	}
 
 }

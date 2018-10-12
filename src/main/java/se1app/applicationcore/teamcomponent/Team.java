@@ -9,10 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
-
 import se1app.applicationcore.spielercomponent.Spieler;
 import se1app.applicationcore.spielercomponent.SpielerNummer;
 import se1app.applicationcore.spielercomponent.SpielerRepository;
@@ -42,7 +38,7 @@ public class Team {
 
 	public Team() {};
 	
-	public Team(int nummer, String name, Spieler spiler1, Spieler spiler2) throws Exception {
+	public Team(int nummer, String name, Spieler spiler1, Spieler spiler2) throws TeamNameNotSetException, ToManyPlayerInTeamException {
 		if (name.isEmpty()) {
 			throw new TeamNameNotSetException();
 		} else {

@@ -28,14 +28,45 @@ public class SpielerComponentImpl implements SpielerComponentInterface{
 
 	@Override
 	public Spieler getSpielerByName(String name) {
-		return spielerRepository.findByName(name);
+		return spielerRepository.findByName(name.toLowerCase());
 	}
 
-//	@Override
-//	public void newSpieler(Integer bN) {
-//		// TODO Auto-generated method stub
-//		
-//	}
+	@Override
+	public void newSpieler(int nummer, String name, String twitch){
+		
+		try {
+			spielerRepository.save(new Spieler(nummer, name, twitch));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void updateTeamBySpieler(String spieler, String team){
+		
+		Spieler newSpieler = spielerRepository.findByName(spieler);
+		spielerRepository.delete(newSpieler);
+		newSpieler.addTeam(team);
+		spielerRepository.save(newSpieler);
+		
+	}
+	
+	@Override
+	public void newSpielerS(String nummer, String name, String twitch){
+		
+		System.out.println(nummer + "das ist die Ausgabe");
+		System.out.println(name + "das ist die Ausgabe");
+		System.out.println(twitch + "das ist die Ausgabe");
+		
+		int spielerNummer = Integer.parseInt(nummer);
+		
+		try {
+			spielerRepository.save(new Spieler(spielerNummer, name, twitch));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 //
 //	@Override
 //	public Team getTeam(Integer teamNumber) {

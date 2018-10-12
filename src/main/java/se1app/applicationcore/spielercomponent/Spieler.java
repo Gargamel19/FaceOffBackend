@@ -1,5 +1,8 @@
 package se1app.applicationcore.spielercomponent;
 
+import java.awt.List;
+import java.util.ArrayList;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,14 +34,13 @@ public class Spieler {
 	
     private String twitch;
     
-    @ManyToOne
-    private Team teams ;
+    private ArrayList<String> teams = new ArrayList<String>();
     
     private int kills = 0;
     
     public Spieler() {};
 
-	public Spieler(int nummer, String name, String twitch) throws Exception {
+	public Spieler(int nummer, String name, String twitch) {
 		
 		this.setSpielerNumber(new SpielerNummer(nummer));
 		this.name = name.toLowerCase();
@@ -72,26 +74,26 @@ public class Spieler {
 		this.twitch = twitch;
 	}
 	
-	public Team getTeams() {
+	public ArrayList<String> getTeams() {
 		return teams;
 	}
 	
-	public void setTeams(Team teams) {
+	public void setTeams(ArrayList<String> teams) {
 		this.teams = teams;
 	}
 	
-//	private void addTeam(Team team) {
-//		this.teams.add(team);
-//	}
-//	
-//	private void deleteTeam(Team team) {
-//		for (int i = 0; i < teams.size(); i++) {
-//			if (teams.get(i)==team) {
-//				this.teams.remove(i);
-//				break;
-//			}
-//		}
-//	}
+	public void addTeam(String team) {
+		this.teams.add(team);
+	}
+	
+	public void deleteTeam(String team) {
+		for (int i = 0; i < teams.size(); i++) {
+			if (teams.get(i)==team) {
+				this.teams.remove(i);
+				break;
+			}
+		}
+	}
 	
 	@Override
 	public int hashCode() {

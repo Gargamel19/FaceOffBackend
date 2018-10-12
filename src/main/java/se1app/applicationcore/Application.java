@@ -2,6 +2,7 @@ package se1app.applicationcore;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.actuate.metrics.export.SpecificTriggerProperties;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -25,14 +26,24 @@ public class Application {
                 .forEach(
                         a -> {
 							try {
-	                        	Spieler we = new Spieler(3, "we", "twitch.tv/ew");
-	                        	Spieler rewe = new Spieler(4, "rewe", "twitch.tv/rewe");
+	                        	Spieler fettarm = new Spieler(0, "FettarmQP", "twitch.tv/FettarmQP");
+	                        	Spieler mauchel1 = new Spieler(1, "Mauchel1", "twitch.tv/Mauchel1");
+	                        	Spieler ickputzdiewech = new Spieler(2, "ickputzdiewech", "");
+	                        	Spieler leovanGareth = new Spieler(3, "LeovanGareth", "");
+	                        	spielerRepository.save(fettarm);
+	                        	spielerRepository.save(mauchel1);
+	                        	spielerRepository.save(ickputzdiewech);
+	                        	spielerRepository.save(leovanGareth);
+	                        	Team teamStudentenPack = new Team(0, "StudentenPack", fettarm, mauchel1);
+	                        	Team teamLutschendeLuder = new Team(1, "LutschendeLuder", ickputzdiewech, leovanGareth);
+	                        	teamRepository.save(teamStudentenPack);
+	                        	teamRepository.save(teamLutschendeLuder);
+	                        	updateTeamBySpieler(fettarm.getName(), teamStudentenPack.getName(), spielerRepository);
+	                        	updateTeamBySpieler(mauchel1.getName(), teamStudentenPack.getName(), spielerRepository);
+	                        	updateTeamBySpieler(ickputzdiewech.getName(), teamLutschendeLuder.getName(), spielerRepository);         	
+	                        	updateTeamBySpieler(leovanGareth.getName(), teamLutschendeLuder.getName(), spielerRepository);         	
 	                        	
-	                        	spielerRepository.save(we);
-	                        	spielerRepository.save(rewe);
 	                        	
-	                        	teamRepository.save(new Team(1, "StudentenPack", 1, "FettarmQP", "twitch.tv/FettarmQP", 2, "Mauchel1", "twitch.tv/Mauchel1", spielerRepository));
-	                        	teamRepository.save(new Team(2, "GeiloTeam", we, rewe));
 								
 
 							} catch (Exception e) {
@@ -60,6 +71,13 @@ public class Application {
                         .allowCredentials(true);
             }
         };
+    }
+    
+    private void updateTeamBySpieler(String spieler, String team, SpielerRepository sr) {
+    	Spieler newSpieler = sr.findByName(spieler);
+		sr.delete(newSpieler);
+		newSpieler.addTeam(team);
+		sr.save(newSpieler);
     }
 
 }
