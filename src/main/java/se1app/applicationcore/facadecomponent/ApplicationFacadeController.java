@@ -118,7 +118,8 @@ class ApplicationFacadeController {
 	@RequestMapping(value = "/register/spieler", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	public @ResponseBody ResponseEntity<Spieler> newSpieler(@RequestBody SpielerSkelett spieler) {
-		
+		System.out.println(spieler.getName());
+		System.out.println(spieler.getTwitch());
 		Spieler spielerName = spielerComponentInterface.getSpielerByName(spieler.getName().toLowerCase());
 		if(spielerName==null) {
 			
